@@ -1,0 +1,28 @@
+import SwiftUI
+
+struct AddMealView: View {
+    @ObservedObject var tracker: TrackerModel
+    @Environment(\.dismiss) var dismiss
+    
+    @State private var selectedCategory: String = "Breakfast"
+    @State private var calories: Int = 0
+    
+    let categories = ["Breakfast", "Lunch", "Dinner", "Snack"]
+    
+    var body: some View {
+        VStack {
+            Picker("Category", selection: $selectedCategory) {
+                ForEach(categories, id: \.self) { Text($0) }
+            }
+            
+            Stepper("Calories: \(calories)", value: $calories, in: 0...2000, step: 50)
+            Button("Save Meal") {
+                tracker.addMeal(category: selectedCategory, calories: calories)
+                dismiss()
+            }
+            .disabled(calories == 0)
+        }
+        .navigationTitle("Add Meal")
+        
+    }
+}
