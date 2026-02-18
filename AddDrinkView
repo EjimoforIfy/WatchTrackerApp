@@ -1,0 +1,26 @@
+import SwiftUI
+
+struct AddDrinkView: View {
+    @ObservedObject var tracker: TrackerModel
+    @Environment(\.dismiss) var dismiss
+
+    @State private var amount: Double = 0.25 // Default 250 ml
+
+    var body: some View {
+        VStack {
+            Text("Add Water")
+                .font(.headline)
+
+            Slider(value: $amount, in: 0.1...1.0, step: 0.1)
+            Text("\(amount, specifier: "%.1f") L")
+
+            Button("Save Drink") {
+                tracker.addHydration(amount: amount)
+                dismiss()
+            }
+            .padding(.top, 8)
+        }
+        .padding()
+        .navigationTitle("Add Drink")
+    }
+}
