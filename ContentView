@@ -1,0 +1,12 @@
+import SwiftUI
+
+@main
+struct WaterTrackerWatchApp: App {
+    @StateObject private var tracker = TrackerModel()
+
+    var body: some Scene {
+        WindowGroup {
+            ContentView(tracker: tracker)
+        }
+    }
+}
