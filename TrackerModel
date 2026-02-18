@@ -1,0 +1,35 @@
+import Foundation
+import Combine
+
+@MainActor
+class TrackerModel: ObservableObject {
+    @Published var meals: [Meal] = []
+    @Published var hydrationEntries: [Hydration] = []
+    @Published var dailyWaterGoal: Double = 2.0
+    
+            
+struct Meal: Identifiable, Codable {
+    var id = UUID()
+    let category: String // for breakfast, Snack, Lunch
+    let calories: Int
+    let timestamp: Date
+    
+}
+
+struct Hydration: Identifiable, Codable {
+    var id = UUID()
+    let amountLitres: Double
+    let timestamp: Date
+}
+
+    var totalCalories: Int { meals.reduce(0) { $0 + $1.calories } }
+        var totalWater: Double { hydrationEntries.reduce(0) { $0 + $1.amountLitres } }
+        var progressRatio: Double { min(totalWater / dailyWaterGoal, 1.0) }
+        // Basic functions
+        func addMeal(category: String, calories: Int) {
+            meals.append(Meal(category: category, calories: calories, timestamp: Date()))
+        }
+        func addHydration(amount: Double) {
+            hydrationEntries.append(Hydration(amountLitres: amount, timestamp: Date()))
+        }
+    }
